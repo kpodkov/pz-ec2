@@ -1,0 +1,37 @@
+name: Start Zomboid Server
+
+on: workflow_dispatch
+
+env:
+  AWS_REGION: eu-west-1
+
+jobs:
+  start:
+    name: Start Server
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Start server
+      run: |
+        INSTANCE_ID=$(aws ec2 describe-instances --output text --query "Reservations[*].Instances[*].InstanceId" --filters Name=instance-state-name,Values=stopped Name=tag:Name,Values=zomboid-server)
+        if [[ ! -z "$INSTANCE_ID" ]]; then
+          aws ec2 start-instances --instance-ids $INSTANCE_ID
+          sleep 5
+        fi
+        IP=$(aws ec2 describe-instances --output text --query "Reservations[*].Instances[*].PublicIpAddress" --filters Name=instance-state-name,Values=running Name=tag:Name,Values=zomboid-server)
+        echo "Use this IP to connect: ${IP}"
+        PAYLOAD='{"username": "Zomboid","content": "Server started with IP ['$IP']"}'
+        curl --location --request POST '${{ secrets.DISCORD_WEBHOOK_URL }}' \
+        --header 'Content-Type: application/json' \
+        --data "$PAYLOAD"
