@@ -86,4 +86,3 @@ cp /data/zomboid/zomboid.service /etc/systemd/system
 systemctl daemon-reload
 systemctl enable zomboid.service
 systemctl restart zomboid
-syste
