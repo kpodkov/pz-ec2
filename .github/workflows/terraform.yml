@@ -2,7 +2,7 @@ name: Terraform
 
 defaults:
   run:
-    working-directory: 'valheim-server'
+    working-directory: 'zomboid-server'
 
 on: workflow_dispatch
 
