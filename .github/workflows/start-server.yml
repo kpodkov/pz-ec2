@@ -25,6 +25,7 @@ jobs:
     - name: Start server
       run: |
         INSTANCE_ID=$(aws ec2 describe-instances --output text --query "Reservations[*].Instances[*].InstanceId" --filters Name=instance-state-name,Values=stopped --filters Name=tag:Name,Values=zomboid-server)
+        echo "YOUR ID IS \n $INSTANCE_ID"
         if [[ ! -z "$INSTANCE_ID" ]]; then
           aws ec2 start-instances --instance-ids $INSTANCE_ID
           sleep 5
