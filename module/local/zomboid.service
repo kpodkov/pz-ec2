@@ -1,0 +1,19 @@
+[Unit]
+Description=Project Zomboid 41.6x server
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=3
+User=${username}
+WorkingDirectory=/data/zomboid
+Environment=PATH=/data/zomboid/jre64/bin:$$PATH
+Environment=LD_LIBRARY_PATH=/data/zomboid/linux64:/data/zomboid/natives:/data/zomboid/:/data/zomboid/jre64/lib/amd64:$$LD_LIBRARY_PATH
+ExecStart=/data/zomboid/start-server.sh -adminpassword supersecret
+#ExecStop=/usr/bin/rcon -H localhost -p 27015 -P supersecret save
+#ExecStop=/usr/bin/rcon -H localhost -p 27015 -P supersecret quit
+#ExecStop=/usr/bin/screen -S pzserver -X quit
+
+[Install]
+WantedBy=multi-user.target
+Alias=pzserver
