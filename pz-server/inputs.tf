@@ -23,7 +23,7 @@ variable "keybase_username" {
 
 variable "instance_type" {
   type        = string
-  default     = "t3a.medium"
+  default     = "t3a.large"
   description = "AWS EC2 instance type to run the server on (t3a.medium is the minimum size)"
 }
 

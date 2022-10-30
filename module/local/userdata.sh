@@ -62,9 +62,21 @@ echo "==========================="
 aws s3 cp s3://${bucket}/zomboid.service /data/zomboid/zomboid.service
 aws s3 cp s3://${bucket}/ProjectZomboid64.json /data/zomboid/ProjectZomboid64.json
 aws s3 cp s3://${bucket}/servertest.ini /home/${username}/Zomboid/Server/servertest.ini
+aws s3 cp s3://${bucket}/servertest_SandboxVars.lua /home/${username}/Zomboid/Server/servertest_SandboxVars.lua
+BACKUPS=$(aws s3api list-objects --bucket ${bucket} --prefix servertest --max-items 1 || true > /dev/null 2>&1)
+if [ -z "$${BACKUPS}" ]; then
+    echo "No backups found in \"s3://${bucket}/servertest/\". A new world will be created."
+else
+    echo "Backups found, restoring..."
+    aws s3 sync s3://${bucket}/servertest/ /home/${username}/Zomboid/Saves/Multiplayer/servertest --delete
+fi
+
+chown -R ${username}:${username} /home/${username}/Zomboid/
 chown ${username}:${username} /data/zomboid/zomboid.service
 chown ${username}:${username} /data/zomboid/ProjectZomboid64.json
+chown ${username}:${username} /home/${username}/Zomboid/Server
 chown ${username}:${username} /home/${username}/Zomboid/Server/servertest.ini
+chown ${username}:${username} /home/${username}/Zomboid/Server/servertest_SandboxVars.lua
 
 cp /data/zomboid/zomboid.service /etc/systemd/system
 
@@ -74,3 +86,4 @@ cp /data/zomboid/zomboid.service /etc/systemd/system
 systemctl daemon-reload
 systemctl enable zomboid.service
 systemctl restart zomboid
+syste

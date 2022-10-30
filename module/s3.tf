@@ -31,3 +31,11 @@ resource "aws_s3_bucket_object" "ProjectZomboid64" {
   content_base64 = base64encode(templatefile("${path.module}/local/ProjectZomboid64.json", { username = local.username }))
   etag           = filemd5("${path.module}/local/ProjectZomboid64.json")
 }
+
+
+resource "aws_s3_bucket_object" "SandboxVars" {
+  bucket         = aws_s3_bucket.zomboid.id
+  key            = "/servertest_SandboxVars.lua"
+  content_base64 = base64encode(templatefile("${path.module}/local/servertest_SandboxVars.lua", { username = local.username }))
+  etag           = filemd5("${path.module}/local/servertest_SandboxVars.lua")
+}

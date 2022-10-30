@@ -9,9 +9,9 @@ User=${username}
 WorkingDirectory=/data/zomboid
 Environment=PATH=/data/zomboid/jre64/bin:$$PATH
 Environment=LD_LIBRARY_PATH=/data/zomboid/linux64:/data/zomboid/natives:/data/zomboid/:/data/zomboid/jre64/lib/amd64:$$LD_LIBRARY_PATH
-ExecStartPre=mount /dev/nvme1n1 /data
+#ExecStartPre=mount /dev/nvme1n1 /data
 ExecStart=/data/zomboid/start-server.sh -adminpassword supersecret
-#ExecStop=/usr/bin/rcon -H localhost -p 27015 -P supersecret save
+ExecStop=aws s3 sync /home/pzuser/Zomboid/Saves/Multiplayer/servertest s3://zomboid20221030172809547000000001/servertest/ --delete
 #ExecStop=/usr/bin/rcon -H localhost -p 27015 -P supersecret quit
 #ExecStop=/usr/bin/screen -S pzserver -X quit
 
