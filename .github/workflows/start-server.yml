@@ -24,12 +24,12 @@ jobs:
 
     - name: Start server
       run: |
-        INSTANCE_ID=$(aws ec2 describe-instances --output text --query "Reservations[*].Instances[*].InstanceId" --filters Name=instance-state-name,Values=stopped Name=tag:Name,Values=zomboid-server)
+        INSTANCE_ID=$(aws ec2 describe-instances --output text --query "Reservations[*].Instances[*].InstanceId" --filters Name=instance-state-name,Values=stopped --filters Name=tag:Name,Values=zomboid-server)
         if [[ ! -z "$INSTANCE_ID" ]]; then
           aws ec2 start-instances --instance-ids $INSTANCE_ID
           sleep 5
         fi
-        IP=$(aws ec2 describe-instances --output text --query "Reservations[*].Instances[*].PublicIpAddress" --filters Name=instance-state-name,Values=running Name=tag:Name,Values=zomboid-server)
+        IP=$(aws ec2 describe-instances --output text --query "Reservations[*].Instances[*].PublicIpAddress" --filters Name=instance-state-name,Values=running --filters Name=tag:Name,Values=zomboid-server)
         echo "Use this IP to connect: ${IP}"
         PAYLOAD='{"username": "Zomboid","content": "Server started with IP ['$IP']"}'
         curl --location --request POST '${{ secrets.DISCORD_WEBHOOK_URL }}' \
