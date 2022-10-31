@@ -17,7 +17,7 @@ resource "aws_instance" "zomboid" {
   ebs_optimized = true
   user_data     = templatefile("${path.module}/config/userdata.sh", {
     username    = local.username
-    bucket      = aws_s3_bucket.zomboid.id
+    bucket      = data.aws_s3_bucket.zomboid.id
     server_name = var.server_name
   })
   iam_instance_profile   = aws_iam_instance_profile.zomboid.name

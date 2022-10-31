@@ -69,7 +69,8 @@ if [ -z "$${BACKUPS}" ]; then
     echo "No backups found in \"s3://${bucket}/${server_name}/\". A new world will be created."
 else
     echo "Backups found, restoring..."
-    aws s3 sync s3://${bucket}/${server_name}/Save/ /home/${username}/Zomboid/Saves/Multiplayer/${server_name} --delete
+    aws s3 sync s3://${bucket}/${server_name}/db /home/${username}/Zomboid/db --delete
+    aws s3 sync s3://${bucket}/${server_name}/Save /home/${username}/Zomboid/Saves/Multiplayer/${server_name} --delete
 fi
 
 # Fix permissions

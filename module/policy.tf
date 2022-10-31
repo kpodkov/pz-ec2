@@ -1,5 +1,5 @@
 resource "aws_s3_bucket_policy" "zomboid" {
-  bucket = aws_s3_bucket.zomboid.id
+  bucket = data.aws_s3_bucket.zomboid.id
   policy = jsonencode({
     Version : "2012-10-17",
     Id : "PolicyForzomboidBackups",
@@ -14,7 +14,7 @@ resource "aws_s3_bucket_policy" "zomboid" {
           "s3:Get*",
           "s3:List*"
         ],
-        Resource : "arn:aws:s3:::${aws_s3_bucket.zomboid.id}/*"
+        Resource : "arn:aws:s3:::${data.aws_s3_bucket.zomboid.id}/*"
       }
     ]
   })
@@ -37,8 +37,8 @@ resource "aws_iam_policy" "zomboid" {
           "s3:List*"
         ],
         Resource : [
-          "arn:aws:s3:::${aws_s3_bucket.zomboid.id}",
-          "arn:aws:s3:::${aws_s3_bucket.zomboid.id}/"
+          "arn:aws:s3:::${data.aws_s3_bucket.zomboid.id}",
+          "arn:aws:s3:::${data.aws_s3_bucket.zomboid.id}/"
         ]
       },
       {

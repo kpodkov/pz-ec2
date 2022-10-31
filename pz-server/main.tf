@@ -1,4 +1,4 @@
-module "pz_server" {
+module "main" {
   source          = "../module"
   aws_region      = "eu-west-1"
   instance_type   = "t3a.large"

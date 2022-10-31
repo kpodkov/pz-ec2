@@ -11,7 +11,7 @@ output "monitoring_url" {
 }
 
 output "bucket_id" {
-  value = aws_s3_bucket.zomboid.id
+  value = data.aws_s3_bucket.zomboid.id
 }
 
 output "public_ip" {
