@@ -1,8 +1,8 @@
 name: Terraform
 
-#defaults:
-#  run:
-#    working-directory: 'pz-server'
+defaults:
+  run:
+    working-directory: ./
 
 on: workflow_dispatch
 
@@ -21,7 +21,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: hashicorp/setup-terraform@v1
 
-    - run: terraform init
+    - run: pwd
 
     - id: plan
       run: make plan
