@@ -29,7 +29,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: debug
-        run: ls -la $HOME/.aws
+        run: printenv
 
       - name: plan
         run: make plan
