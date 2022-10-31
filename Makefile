@@ -14,13 +14,13 @@ clean:
 	@echo "========================"
 	@echo " Cleaning tmp directory"
 	@echo "========================"
-	@docker run --rm -it \
+	@docker run --rm \
 	  --volume "${HOME}/.aws:/root/.aws" \
 	  --volume "${PWD}:/infra" \
 	  --workdir "/infra" \
 	  "${PYTHON_IMAGE}" \
 	  find . -type d -name ".terraform" -prune -exec rm -rf {} \;
-	@docker run --rm -it \
+	@docker run --rm \
 	  --volume "${HOME}/.aws:/root/.aws" \
 	  --volume "${PWD}:/infra" \
 	  --workdir "/infra" \
@@ -31,7 +31,7 @@ init:
 	@echo "================"
 	@echo " Terraform Init"
 	@echo "================"
-	@docker run -it \
+	@docker run \
  	  --env AWS_PROFILE=${AWS_PROFILE} \
  	  --env TF_LOG="${TF_LOG}" \
  	  --volume "${HOME}/.aws:/root/.aws" \
@@ -45,7 +45,7 @@ plan:
 	@echo "================"
 	@echo " Terraform Plan"
 	@echo "================"
-	@docker run -it \
+	@docker run \
  	  --env AWS_PROFILE=${AWS_PROFILE} \
    	  --env TF_LOG="${TF_LOG}" \
  	  --volume "${HOME}/.aws:/root/.aws" \
@@ -59,7 +59,7 @@ destroy:
 	@echo "==================="
 	@echo " Terraform Destroy"
 	@echo "==================="
-	@docker run -it \
+	@docker run \
  	  --env AWS_PROFILE=${AWS_PROFILE} \
    	  --env TF_LOG="${TF_LOG}" \
  	  --volume "${HOME}/.aws:/root/.aws" \
@@ -74,7 +74,7 @@ import:
 	@echo "=================="
 	@echo " Terraform Import"
 	@echo "=================="
-	@docker run -it \
+	@docker run \
  	  --env AWS_PROFILE=${AWS_PROFILE} \
    	  --env TF_LOG="${TF_LOG}" \
  	  --volume "${HOME}/.aws:/root/.aws" \
@@ -88,7 +88,7 @@ state-rm:
 	@echo "===================="
 	@echo " Terraform State RM"
 	@echo "===================="
-	@docker run -it \
+	@docker run \
  	  --env AWS_PROFILE=${AWS_PROFILE} \
    	  --env TF_LOG="${TF_LOG}" \
  	  --volume "${HOME}/.aws:/root/.aws" \
@@ -102,7 +102,7 @@ apply:
 	@echo "================="
 	@echo " Terraform Apply"
 	@echo "================="
-	@docker run -it \
+	@docker run \
  	  --env AWS_PROFILE=${AWS_PROFILE} \
  	  --env TF_LOG="${TF_LOG}" \
  	  --volume "${HOME}/.aws:/root/.aws" \
