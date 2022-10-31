@@ -22,6 +22,8 @@ jobs:
     - uses: hashicorp/setup-terraform@v1
 
     - run: pwd
+    - run: ls -la
+    - run: ls -la $HOME/.aws/
 
     - id: plan
       run: make plan
