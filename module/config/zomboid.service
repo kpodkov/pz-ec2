@@ -9,6 +9,9 @@ User=${username}
 WorkingDirectory=/home/${username}/zomboid
 Environment=PATH=/home/${username}/zomboid/jre64/bin:$$PATH
 Environment=LD_LIBRARY_PATH=/home/${username}/zomboid/linux64:/home/${username}/zomboid/natives:/home/${username}/zomboid/:/home/${username}/zomboid/jre64/lib/amd64:$$LD_LIBRARY_PATH
+ExecStartPre=aws s3 cp s3://${bucket}/${server_name}/${server_name}.ini /home/${username}/Zomboid/Server/${server_name}.ini
+ExecStartPre=aws s3 cp s3://${bucket}/${server_name}/${server_name}_SandboxVars.lua /home/${username}/Zomboid/Server/${server_name}_SandboxVars.lua
+ExecStartPre=aws s3 sync s3://${bucket}/${server_name}/db /home/${username}/Zomboid/db --delete
 ExecStartPre=aws s3 sync s3://${bucket}/${server_name}/db /home/${username}/Zomboid/db --delete
 ExecStartPre=aws s3 sync s3://${bucket}/${server_name}/Save /home/${username}/Zomboid/Saves/Multiplayer/${server_name} --delete
 ExecStart=/home/${username}/zomboid/start-server.sh -adminpassword supersecret -servername ${server_name}

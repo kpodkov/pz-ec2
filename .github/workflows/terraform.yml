@@ -2,7 +2,7 @@ name: Terraform
 
 defaults:
   run:
-    working-directory: 'zomboid-server'
+    working-directory: 'pz-server'
 
 on: workflow_dispatch
 
@@ -24,4 +24,7 @@ jobs:
     - run: terraform init
 
     - id: plan
-      run: terraform plan -input=false -no-color
+      run: make plan
+
+    - id: apply
+      run: make apply
