@@ -1,8 +1,8 @@
 name: Terraform
 
-defaults:
-  run:
-    working-directory: 'pz-server'
+#defaults:
+#  run:
+#    working-directory: 'pz-server'
 
 on: workflow_dispatch
 
