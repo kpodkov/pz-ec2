@@ -1,8 +1,7 @@
 TF_IMAGE           :="hashicorp/terraform:1.3.2"
 TF_LOG             :="ERROR"
 PYTHON_IMAGE       :="python:3.9.12-slim-buster"
-WORKDIR            := "pz-server/"
-#AWS_PROFILE        := "default"
+WORKDIR            := "ez-zomboid/"
 
 plan: clean init
 state-rm: clean init
