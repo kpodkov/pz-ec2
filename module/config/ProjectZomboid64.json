@@ -24,7 +24,7 @@
   ],
   "vmArgs": [
     "-Djava.awt.headless=true",
-    "-Xmx6g",
+    "-Xmx8g",
     "-Dzomboid.steam=1",
     "-Dzomboid.znetlog=1",
     "-Djava.library.path=linux64/:natives/",

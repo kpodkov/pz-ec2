@@ -12,19 +12,13 @@ resource "aws_instance" "zomboid" {
   availability_zone = "eu-west-1a"
   instance_type     = var.instance_type
   root_block_device {
-    volume_size = 8
+    volume_size = 16
   }
   ebs_optimized = true
-
-  ebs_block_device {
-    device_name = "/dev/sdh"
-    volume_size = 16
-    volume_type = "gp2"
-  }
-
-  user_data = templatefile("${path.module}/local/userdata.sh", {
-    username = local.username
-    bucket   = aws_s3_bucket.zomboid.id
+  user_data     = templatefile("${path.module}/config/userdata.sh", {
+    username    = local.username
+    bucket      = aws_s3_bucket.zomboid.id
+    server_name = var.server_name
   })
   iam_instance_profile   = aws_iam_instance_profile.zomboid.name
   vpc_security_group_ids = [aws_security_group.ingress.id]
@@ -35,6 +29,9 @@ resource "aws_instance" "zomboid" {
   tags       = local.ec2_tags
   depends_on = [
     aws_s3_bucket_object.zomboid_service,
+    aws_s3_bucket_object.ProjectZomboid64,
+    aws_s3_bucket_object.SandboxVars,
+    aws_s3_bucket_object.servertest,
   ]
 }
 

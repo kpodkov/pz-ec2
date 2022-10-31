@@ -37,7 +37,6 @@ resource "aws_iam_role_policy_attachment" "ssm" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
 
-#tfsec:ignore:aws-iam-enforce-mfa
 resource "aws_iam_group" "zomboid_users" {
   name = "${local.name}-users"
   path = "/users/"
@@ -51,7 +50,7 @@ resource "aws_iam_group_policy_attachment" "zomboid_users" {
 
 resource "aws_iam_user" "zomboid_user" {
   #checkov:skip=CKV2_AWS_22:We want users to be able to access the console
-  for_each = var.admins
+  for_each = var.aws_admins
 
   name          = each.key
   path          = "/"
@@ -63,7 +62,7 @@ resource "aws_iam_user_login_profile" "zomboid_user" {
   for_each = aws_iam_user.zomboid_user
 
   user    = aws_iam_user.zomboid_user[each.key].name
-  pgp_key = "keybase:${var.keybase_username}"
+  pgp_key = "keybase:user"
 }
 
 resource "aws_iam_user_group_membership" "zomboid_users" {

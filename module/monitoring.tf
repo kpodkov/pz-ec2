@@ -1,6 +1,4 @@
-#tfsec:ignore:AWS016
 resource "aws_sns_topic" "zomboid" {
-  #checkov:skip=CKV_AWS_26:CloudWatch can't publish messages to encrypted topics - https://aws.amazon.com/premiumsupport/knowledge-center/cloudwatch-receive-sns-for-alarm-trigger/
   name = "${local.name}-status"
   tags = local.tags
 }
@@ -24,7 +22,7 @@ resource "aws_cloudwatch_metric_alarm" "zomboid_stopped" {
   statistic           = "Average"
   namespace           = "AWS/EC2"
   threshold           = "50000"
-  alarm_actions = [
+  alarm_actions       = [
     aws_sns_topic.zomboid.arn,
     "arn:aws:swf:${var.aws_region}:${data.aws_caller_identity.current.account_id}:action/actions/AWS_EC2.InstanceId.Stop/1.0",
   ]
@@ -33,8 +31,8 @@ resource "aws_cloudwatch_metric_alarm" "zomboid_stopped" {
 }
 
 resource "aws_cloudwatch_event_rule" "zomboid_started" {
-  name        = "${local.name}-started"
-  description = "Used to trigger notifications when the zomboid server starts"
+  name          = "${local.name}-started"
+  description   = "Used to trigger notifications when the zomboid server starts"
   event_pattern = jsonencode({
     source : ["aws.ec2"],
     "detail-type" : ["EC2 Instance State-change Notification"],
@@ -69,7 +67,6 @@ data "aws_route53_zone" "selected" {
 }
 
 resource "aws_route53_record" "zomboid" {
-  #checkov:skip=CKV2_AWS_23:Broken - https://github.com/bridgecrewio/checkov/issues/1359
   count = var.domain != "" ? 1 : 0
 
   zone_id = data.aws_route53_zone.selected[0].zone_id

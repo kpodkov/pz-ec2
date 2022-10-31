@@ -42,7 +42,7 @@ variable "server_name" {
   description = "The server name"
 }
 
-variable "purpose" {
+variable "environment" {
   type        = string
   default     = "prod"
   description = "The purpose of the deployment"

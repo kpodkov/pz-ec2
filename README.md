@@ -8,13 +8,6 @@ Project Zomboid Server hosted on an On-Demand EC2 instance, with a GitHub Action
     1. ⚠ Check `Makefile` for env vars.
 3. If all good, push and make a PR.
 
-# Checking userdata.sh logs
-Connect to the EC2:
-
-```shell
-tail -f /var/log/cloud-init-output.log
-```
-
 # Starting the Server
 
 The GitHub action is configured to be triggered manually. To start it:
@@ -23,6 +16,22 @@ The GitHub action is configured to be triggered manually. To start it:
 2. Select the `Start Zomboid Server` workflow.
 3. Run the workflow for `Branch: master`
 4. The serevr IP will is printed in the log of the `Start server` step.
+
+# Checking userdata.sh logs
+Connect to the EC2:
+
+```shell
+tail -f /var/log/cloud-init-output.log
+```
+
+
+# Follow server logs
+Connect to the EC2:
+
+```shell
+journalctl -f -u zomboid.service
+```
+
 
 # Terraform
 
