@@ -12,11 +12,10 @@ Environment=LD_LIBRARY_PATH=/home/${username}/zomboid/linux64:/home/${username}/
 ExecStartPre=aws s3 cp s3://${bucket}/${server_name}/${server_name}.ini /home/${username}/Zomboid/Server/${server_name}.ini
 ExecStartPre=aws s3 cp s3://${bucket}/${server_name}/${server_name}_SandboxVars.lua /home/${username}/Zomboid/Server/${server_name}_SandboxVars.lua
 ExecStartPre=aws s3 sync s3://${bucket}/${server_name}/db /home/${username}/Zomboid/db --delete
-ExecStartPre=aws s3 sync s3://${bucket}/${server_name}/db /home/${username}/Zomboid/db --delete
 ExecStartPre=aws s3 sync s3://${bucket}/${server_name}/Save /home/${username}/Zomboid/Saves/Multiplayer/${server_name} --delete
 ExecStart=/home/${username}/zomboid/start-server.sh -adminpassword supersecret -servername ${server_name}
-ExecStop=aws s3 sync /home/${username}/Zomboid/Saves/Multiplayer/${server_name} s3://${bucket}/${server_name}/Save/ --delete
-ExecStop=aws s3 sync /home/${username}/Zomboid/db s3://${bucket}/${server_name}/db/ --delete
+ExecStop=aws s3 sync /home/${username}/Zomboid/Saves/Multiplayer/${server_name} s3://${bucket}/${server_name}/Save/
+ExecStop=aws s3 sync /home/${username}/Zomboid/db s3://${bucket}/${server_name}/db/
 
 [Install]
 WantedBy=multi-user.target
