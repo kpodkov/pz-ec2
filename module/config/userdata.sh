@@ -83,4 +83,4 @@ chown -R ${username}:${username} /home/${username}/zomboid/
 cp /home/${username}/zomboid/zomboid.service /etc/systemd/system
 systemctl daemon-reload
 systemctl enable zomboid.service
-systemctl restart zomboid
+systemctl start zomboid

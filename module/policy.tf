@@ -10,9 +10,7 @@ resource "aws_s3_bucket_policy" "zomboid" {
           "AWS" : aws_iam_role.zomboid.arn
         },
         Action : [
-          "s3:Put*",
-          "s3:Get*",
-          "s3:List*"
+          "s3:*"
         ],
         Resource : "arn:aws:s3:::${data.aws_s3_bucket.zomboid.id}/*"
       }
@@ -32,9 +30,7 @@ resource "aws_iam_policy" "zomboid" {
       {
         Effect : "Allow",
         Action : [
-          "s3:Put*",
-          "s3:Get*",
-          "s3:List*"
+          "s3:*"
         ],
         Resource : [
           "arn:aws:s3:::${data.aws_s3_bucket.zomboid.id}",

@@ -9,9 +9,15 @@ User=${username}
 WorkingDirectory=/home/${username}/zomboid
 Environment=PATH=/home/${username}/zomboid/jre64/bin:$$PATH
 Environment=LD_LIBRARY_PATH=/home/${username}/zomboid/linux64:/home/${username}/zomboid/natives:/home/${username}/zomboid/:/home/${username}/zomboid/jre64/lib/amd64:$$LD_LIBRARY_PATH
-ExecStartPre=aws s3 sync s3://${bucket}/${server_name}/db /home/${username}/Zomboid/db --delete
-ExecStartPre=aws s3 sync s3://${bucket}/${server_name}/Save /home/${username}/Zomboid/Saves/Multiplayer/${server_name} --delete
+ExecStartPre=rm -rf /home/pzuser/Zomboid/db
+ExecStartPre=rm -rf /home/pzuser/Zomboid/Saves
+ExecStartPre=sleep 3
+ExecStartPre=aws s3 sync s3://${bucket}/${server_name}/db /home/${username}/Zomboid/db --size-only
+ExecStartPre=aws s3 sync s3://${bucket}/${server_name}/Save /home/${username}/Zomboid/Saves/Multiplayer/${server_name} --size-only
 ExecStart=/home/${username}/zomboid/start-server.sh -adminpassword supersecret -servername ${server_name}
+ExecStop=aws s3 rm --recursive s3://${bucket}/${server_name}/Save/
+ExecStop=aws s3 rm --recursive s3://${bucket}/${server_name}/db/
+ExecStop=sleep 3
 ExecStop=aws s3 sync /home/${username}/Zomboid/Saves/Multiplayer/${server_name} s3://${bucket}/${server_name}/Save/
 ExecStop=aws s3 sync /home/${username}/Zomboid/db s3://${bucket}/${server_name}/db/
 
