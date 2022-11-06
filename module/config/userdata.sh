@@ -24,14 +24,6 @@ cd /tmp
 curl -s https://my-netdata.io/kickstart-static64.sh > kickstart-static64.sh
 bash kickstart-static64.sh --dont-wait
 
-#echo "================"
-#echo " Setting up EBS"
-#echo "================"
-#file -s /dev/nvme1n1
-#mkfs -t xfs /dev/nvme1n1
-#mkdir /home/${username}
-#mount /dev/nvme1n1 /home/${username}
-
 echo "============="
 echo " Setup User"
 echo "============="
@@ -43,7 +35,6 @@ echo " Instal SteamCMD"
 echo "=================="
 mkdir -p /home/${username}/steam && cd /home/${username}/steam || exit
 curl -sqL "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" | tar zxvf -
-
 
 echo "==========================="
 echo " Installing PZ Server"
@@ -63,15 +54,14 @@ aws s3 cp s3://${bucket}/${server_name}/ProjectZomboid64.json /home/${username}/
 aws s3 cp s3://${bucket}/${server_name}/${server_name}.ini /home/${username}/Zomboid/Server/${server_name}.ini
 aws s3 cp s3://${bucket}/${server_name}/${server_name}_SandboxVars.lua /home/${username}/Zomboid/Server/${server_name}_SandboxVars.lua
 
-# Check if backup exists on S3
-BACKUPS=$(aws s3api list-objects --bucket ${bucket} --prefix "${server_name}/Save" --max-items 1 || true > /dev/null 2>&1)
-if [ -z "$${BACKUPS}" ]; then
-    echo "No backups found in \"s3://${bucket}/${server_name}/\". A new world will be created."
-else
-    echo "Backups found, restoring..."
-    aws s3 sync s3://${bucket}/${server_name}/db /home/${username}/Zomboid/db --delete
-    aws s3 sync s3://${bucket}/${server_name}/Save /home/${username}/Zomboid/Saves/Multiplayer/${server_name} --delete
-fi
+# Configure backup scripts
+aws s3 cp s3://${bucket}/${server_name}/crontab /home/${username}/zomboid/crontab
+aws s3 cp s3://${bucket}/${server_name}/backup_server.sh /home/${username}/zomboid/backup_server.sh
+aws s3 cp s3://${bucket}/${server_name}/restore_backup.sh /home/${username}/zomboid/restore_backup.sh
+chmod +x /home/${username}/zomboid/backup_server.sh
+chmod +x /home/${username}/zomboid/restore_backup.sh
+crontab < /home/${username}/zomboid/crontab
+
 
 # Fix permissions
 chown -R ${username}:${username} /home/${username}/Zomboid/
